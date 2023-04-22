@@ -28,10 +28,20 @@ app.post('/gift', (req, res) => {
   const isInTheList = verifyProof(proof, name, MERKLE_ROOT);
   console.log("Verification: ", isInTheList );
   if(isInTheList) {
-    res.send("You got a toy robot!");
+    res.send(
+      
+      "You got a toy robot!"
+      
+    );
   }
   else {
-    res.send("You are not on the list :(");
+    const correctName = niceList[Math.floor(Math.random()*niceList.length)];
+    console.log(correctName);
+    res.send(
+      
+        "You are not on the list :(  You can try this name: "+  correctName
+    
+      );
   }
 });
 
