@@ -1,24 +1,37 @@
 import React from 'react';
 import { useState,useEffect } from 'react'
+import axios from 'axios';
 
 import ErrorHandler from './ErrorHandler';
 
-const Search = ({setName,name}) => {
-    const [error, setError] = useState(false);
-    const [errorText, setErrorText] = useState("the input name cannot be empty, please type a name below");
+const Search = ({setName,name,setCheck,error,setError,setWon,setMessage}) => {
+    
+    const [errorText, setErrorText] = useState("The input name cannot be empty, please type a name below...");
 
-    useEffect(()=>{
-        setError(false);
-    },[name])
-
+    const fetchData = async ()=>{
+        try{
+          const res = await axios.post('http://localhost:1225/gift',{
+            name: name
+          });
+          setWon(res.data.result);
+          setMessage(res.data.message);
+          console.log(res.data.proof);
+        } catch (error){
+          console.error(error);
+        }
+    }
 
     const handleSearch = () => {
-        console.log("handlesearch");
-        console.log("name ",name);
         if([name].includes('')){
-            console.log("inside includes");
             setError(true);
         }
+        else{
+            setError(false);
+            setCheck(true);
+            fetchData();
+        }
+
+
     }    
     return (
         <div className="items-center mx-auto mt-10">
